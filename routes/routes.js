@@ -2,6 +2,6 @@ const express = require('express');
 const router = express.Router();
 const controller = require('../controllers/emailControl');
 
-router.post('/send-email', controller.Fetch_body);
-router.post('/project-inquiry', controller.project_inquiries);
+router.post('/contact', controller.contact);
+router.post('/quote', controller.Quote);
 module.exports = router;
