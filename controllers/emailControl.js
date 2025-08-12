@@ -19,12 +19,25 @@ const contact = (req,res)=>{
     return res.status(400).json({error: "All fields are required"});
   }
   else{
-    const mailOptions = {
-      from: email,
-      to: process.env.EMAIL_USER,
-      subject: subject,
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
-    };
+const mailOptions = {
+  from: email,
+  to: process.env.EMAIL_USER,
+  subject: `New Contact Message - ${subject}`,
+  text: `
+New Contact Form Submission
+===========================
+
+Name: ${name}
+Email: ${email}
+
+Message:
+${message}
+
+---------------------
+Submitted on: ${new Date().toLocaleString()}
+  `
+};
+
     
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -37,16 +50,34 @@ const contact = (req,res)=>{
   }
 }
 const Quote = (req,res) =>{
-  const {name,email,project_type,project_description} = req.body
-  if(!name || !email || !project_type || !project_description){
+  const {name,email,company,project_type,budget,timeline,project_description} = req.body
+  if(!name || !email || !company||!project_type ||!budget||!timeline|| !project_description){
     return res.status(400).json({error: "All fields are required"});
   }
-  const mailOptions = {
-    from: email,
-    to: process.env.EMAIL_USER,
-    subject: `Quote Request from ${name}`,
-    text: `Name: ${name}\nEmail: ${email}\nProject Type: ${project_type}\nProject Description: ${project_description}`
-  };
+const mailOptions = {
+  from: email,
+  to: process.env.EMAIL_USER,
+  subject: `Quote Request - ${project_type} (${company})`,
+  text: `
+Quote Request Details
+=====================
+
+Name: ${name}
+Email: ${email}
+Company: ${company}
+
+Project Type: ${project_type}
+Budget: ${budget}
+Timeline: ${timeline}
+
+Project Description:
+${project_description}
+
+---------------------
+Submitted on: ${new Date().toLocaleString()}
+  `
+};
+
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Error sending email:', error);
